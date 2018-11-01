@@ -1,4 +1,8 @@
-#include "upDate.h"
+//Spencer Neveux
+//CECS 282 upDate project
+//11/1/18
+
+#include "upDate.hpp"
 #include <iostream>
 
 using namespace std;
@@ -6,276 +10,274 @@ using namespace std;
 int upDate::count = 0;
 
 int Greg2Julian(int month, int day, int year) {
-	int JD = day - 32075 + 1461 * (year + 4800 + (month - 14) / 12) / 4 + 367
-		* (month - 2 - (month - 14) / 12 * 12) / 12 - 3
-		* ((year + 4900 + (month - 14) / 12) / 100) / 4;
-	return JD;
+    int JD = day - 32075 + 1461 * (year + 4800 + (month - 14) / 12) / 4 + 367
+    * (month - 2 - (month - 14) / 12 * 12) / 12 - 3
+    * ((year + 4900 + (month - 14) / 12) / 100) / 4;
+    return JD;
 }
 
 void Julian2Greg(int JD, int & month, int & day, int & year) {
-	int L = JD + 68569;
-	int N = 4 * L / 146097;
-	L = L - (146097 * N + 3) / 4;
-	int I = 4000 * (L + 1) / 1461001;
-	L = L - 1461 * I / 4 + 31;
-	int J = 80 * L / 2447;
-	int K = L - 2447 * J / 80;
-	L = J / 11;
-	J = J + 2 - 12 * L;
-	I = 100 * (N - 49) + I + L;
-
-	year = I;
-	month = J;
-	day = K;
+    int L = JD + 68569;
+    int N = 4 * L / 146097;
+    L = L - (146097 * N + 3) / 4;
+    int I = 4000 * (L + 1) / 1461001;
+    L = L - 1461 * I / 4 + 31;
+    int J = 80 * L / 2447;
+    int K = L - 2447 * J / 80;
+    L = J / 11;
+    J = J + 2 - 12 * L;
+    I = 100 * (N - 49) + I + L;
+    
+    year = I;
+    month = J;
+    day = K;
 }
 
 // Null Constructor
 upDate::upDate() {
-	dptr = new int[3];
-	dptr[0] = 5;
-	dptr[1] = 11;
-	dptr[2] = 1959;
-	count++;
+    dptr = new int[3];
+    dptr[0] = 5;
+    dptr[1] = 11;
+    dptr[2] = 1959;
+    count++;
 }
 
 //Overloaded Constructor
 upDate::upDate(int M, int D, int Y) {
-	dptr = new int[3];
-	dptr[0] = M;
-	dptr[1] = D;
-	dptr[2] = Y;
-
-	int jd = Greg2Julian(M, D, Y);
-	Julian2Greg(jd, M, D, Y);
-	if (M == dptr[0] && D == dptr[1] && Y == dptr[2])
-	{
-		dptr[0] = M;
-		dptr[1] = D;
-		dptr[2] = Y;
-	}
-	else {
-		dptr[0] = 5;
-		dptr[1] = 11;
-		dptr[2] = 1959;
-	}
-	count++;
+    dptr = new int[3];
+    dptr[0] = M;
+    dptr[1] = D;
+    dptr[2] = Y;
+    
+    int jd = Greg2Julian(M, D, Y);
+    Julian2Greg(jd, M, D, Y);
+    if (M == dptr[0] && D == dptr[1] && Y == dptr[2])
+    {
+        dptr[0] = M;
+        dptr[1] = D;
+        dptr[2] = Y;
+    }
+    else {
+        dptr[0] = 5;
+        dptr[1] = 11;
+        dptr[2] = 1959;
+    }
+    count++;
 }
 
 //Constructor for Julian Date
 upDate::upDate(int j) {
-	dptr = new int[3];
-	Julian2Greg(j, dptr[0], dptr[1], dptr[2]);
-	count++;
+    dptr = new int[3];
+    Julian2Greg(j, dptr[0], dptr[1], dptr[2]);
+    count++;
 }
 
-//Destructor 
+//Destructor
 upDate::~upDate() {
-	count--;
-	delete []dptr;
+    count--;
+    delete []dptr;
 }
 
 //SetDate method
 void upDate::setDate(int M, int D, int Y) {
-	dptr = new int[3];
-	dptr[0] = M;
-	dptr[1] = D;
-	dptr[2] = Y;
-
-	int jd = Greg2Julian(M, D, Y);
-	Julian2Greg(jd, M, D, Y);
-	if (M == dptr[0] && D == dptr[1] && Y == dptr[2])
-	{
-		dptr[0] = M;
-		dptr[1] = D;
-		dptr[2] = Y;
-	}
-	else {
-		dptr[0] = 5;
-		dptr[1] = 11;
-		dptr[2] = 1959;
-	}
+    dptr = new int[3];
+    dptr[0] = M;
+    dptr[1] = D;
+    dptr[2] = Y;
+    
+    int jd = Greg2Julian(M, D, Y);
+    Julian2Greg(jd, M, D, Y);
+    if (M == dptr[0] && D == dptr[1] && Y == dptr[2])
+    {
+        dptr[0] = M;
+        dptr[1] = D;
+        dptr[2] = Y;
+    }
+    else {
+        dptr[0] = 5;
+        dptr[1] = 11;
+        dptr[2] = 1959;
+    }
 }
 
 //Copy Constructor
 upDate::upDate(const upDate &obj) {
-	dptr = new int[3];
-	dptr[0] = obj.dptr[0];
-	dptr[1] = obj.dptr[1];
-	dptr[2] = obj.dptr[2];
-
-	count++;
+    dptr = new int[3];
+    dptr[0] = obj.dptr[0];
+    dptr[1] = obj.dptr[1];
+    dptr[2] = obj.dptr[2];
+    
+    count++;
 }
 
 //Get Month Method
 int upDate::getMonth() {
-	return dptr[0];
+    return dptr[0];
 }
 
 // Get Day Method
 int upDate::getDay() {
-	return dptr[1];
+    return dptr[1];
 }
 
 //Get year method
 int upDate::getYear() {
-	return dptr[2];
+    return dptr[2];
 }
 
 //Get month name
 string upDate::getMonthName() {
-	string months[] = { "January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December" };
-	return months[dptr[0] - 1];
+    string months[] = { "January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December" };
+    return months[dptr[0] - 1];
 }
 
 //Get count of how many upDate objects there are
 int upDate::GetDateCount() {
-	return count;
+    return count;
 }
 
-//Get int value of julian 
+//Get int value of julian
 int upDate::julian() {
-	int month, day, year;
-	month = dptr[0];
-	day = dptr[1];
-	year = dptr[2];
-
-	int JD = day - 32075 + 1461 * (year + 4800 + (month - 14) / 12) / 4 + 367
-		* (month - 2 - (month - 14) / 12 * 12) / 12 - 3
-		* ((year + 4900 + (month - 14) / 12) / 100) / 4;
-	return JD;
+    int month, day, year;
+    month = dptr[0];
+    day = dptr[1];
+    year = dptr[2];
+    
+    int JD = day - 32075 + 1461 * (year + 4800 + (month - 14) / 12) / 4 + 367
+    * (month - 2 - (month - 14) / 12 * 12) / 12 - 3
+    * ((year + 4900 + (month - 14) / 12) / 100) / 4;
+    return JD;
 }
 
 //======================================OVERLOADED OPERATORS============================//
 
 //Operator =
 upDate upDate::operator=(upDate D) {
-	dptr = new int[3];
-	dptr[0] = D.dptr[0];
-	dptr[1] = D.dptr[1];
-	dptr[2] = D.dptr[2];
-	return (*this);
+    dptr = new int[3];
+    dptr[0] = D.dptr[0];
+    dptr[1] = D.dptr[1];
+    dptr[2] = D.dptr[2];
+    return (*this);
 }
 
-//Operator += 
+//Operator +=
 upDate upDate::operator+=(int n) {
-	upDate temp(*this);
-	int jd = Greg2Julian(temp.dptr[0], temp.dptr[1], temp.dptr[2]);
-	jd += n;
-	Julian2Greg(jd, dptr[0], dptr[1], dptr[2]);
-	return temp;
+    upDate temp(*this);
+    int jd = Greg2Julian(temp.dptr[0], temp.dptr[1], temp.dptr[2]);
+    jd += n;
+    Julian2Greg(jd, dptr[0], dptr[1], dptr[2]);
+    return temp;
 }
 
 //Operator -=
 upDate upDate::operator-=(int n) {
-	upDate temp(*this);
-	int jd = Greg2Julian(temp.dptr[0], temp.dptr[1], temp.dptr[2]);
-	jd -= n;
-	Julian2Greg(jd, dptr[0], dptr[1], dptr[2]);
-	return temp;
+    upDate temp(*this);
+    int jd = Greg2Julian(temp.dptr[0], temp.dptr[1], temp.dptr[2]);
+    jd -= n;
+    Julian2Greg(jd, dptr[0], dptr[1], dptr[2]);
+    return temp;
 }
 
 
 //Operator +
 upDate upDate::operator+(int n) {
-	upDate temp(*this);
-	int jd = Greg2Julian(temp.dptr[0], temp.dptr[1], temp.dptr[2]);
-	jd += n;
-	Julian2Greg(jd, temp.dptr[0], temp.dptr[1], temp.dptr[2]);
-	return temp;
+    upDate temp(*this);
+    int jd = Greg2Julian(temp.dptr[0], temp.dptr[1], temp.dptr[2]);
+    jd += n;
+    Julian2Greg(jd, temp.dptr[0], temp.dptr[1], temp.dptr[2]);
+    return temp;
 }
 
 //Operator + friend
 upDate operator+(int n, upDate D) {
-	return D + n;
+    return D + n;
 }
 
-//Operator - 
+//Operator -
 upDate upDate::operator-(int n) {
-	upDate temp(*this);
-	int jd = Greg2Julian(temp.dptr[0], temp.dptr[1], temp.dptr[2]);
-	jd -= n;
-	Julian2Greg(jd, temp.dptr[0], temp.dptr[1], temp.dptr[2]);
-	return temp;
+    upDate temp(*this);
+    int jd = Greg2Julian(temp.dptr[0], temp.dptr[1], temp.dptr[2]);
+    jd -= n;
+    Julian2Greg(jd, temp.dptr[0], temp.dptr[1], temp.dptr[2]);
+    return temp;
 }
 
 //Operator - Friend
 upDate operator-(int n, upDate D) {
-	return D - n;
+    return D - n;
 }
 
 
 //upDate - upDate operator
 int upDate::operator-(upDate D) {
-	int jd1 = Greg2Julian(dptr[0], dptr[1], dptr[2]);
-	int jd2 = Greg2Julian(D.dptr[0], D.dptr[1], D.dptr[2]);
-	int result = jd1 - jd2;
-	return result;
+    int jd1 = Greg2Julian(dptr[0], dptr[1], dptr[2]);
+    int jd2 = Greg2Julian(D.dptr[0], D.dptr[1], D.dptr[2]);
+    int result = jd1 - jd2;
+    return result;
 }
 
-//Operator << 
+//Operator <<
 ostream &operator<<(ostream& out, upDate D) {
-	out << D.getMonth() << "/" << D.getDay() << "/" << D.getYear();
-	return out;
+    out << D.getMonth() << "/" << D.getDay() << "/" << D.getYear();
+    return out;
 }
 
 //operator ++
 upDate upDate::operator++() {
-	upDate temp(*this);
-	int jd = Greg2Julian(temp.dptr[0], temp.dptr[1], temp.dptr[2]);
-	jd += 1;
-	Julian2Greg(jd, dptr[0], dptr[1], dptr[2]);
-	return temp;
+    upDate temp(*this);
+    int jd = Greg2Julian(temp.dptr[0], temp.dptr[1], temp.dptr[2]);
+    jd += 1;
+    Julian2Greg(jd, temp.dptr[0], temp.dptr[1], temp.dptr[2]);
+    return temp;
 }
 
 upDate upDate::operator++(int n) {
-	upDate temp(*this);
-	int jd = Greg2Julian(temp.dptr[0], temp.dptr[1], temp.dptr[2]);
-	jd += 1;
-	Julian2Greg(jd, dptr[0], dptr[1], dptr[2]);
-	return temp;
+    upDate temp(*this);
+    int jd = Greg2Julian(temp.dptr[0], temp.dptr[1], temp.dptr[2]);
+    ++jd;
+    Julian2Greg(jd, dptr[0], dptr[1], dptr[2]);
+    return temp;
 }
 
 //operator --
 upDate upDate::operator--() {
-	upDate temp(*this);
-	int jd = Greg2Julian(temp.dptr[0], temp.dptr[1], temp.dptr[2]);
-	jd -= 1;
-	Julian2Greg(jd, dptr[0], dptr[1], dptr[2]);
-	return temp;
+    upDate temp(*this);
+    int jd = Greg2Julian(temp.dptr[0], temp.dptr[1], temp.dptr[2]);
+    jd -= 1;
+    Julian2Greg(jd, temp.dptr[0], temp.dptr[1], temp.dptr[2]);
+    return temp;
 }
 
 upDate upDate::operator--(int n) {
-	upDate temp(*this);
-	int jd = Greg2Julian(temp.dptr[0], temp.dptr[1], temp.dptr[2]);
-	jd -= 1;
-	Julian2Greg(jd, dptr[0], dptr[1], dptr[2]);
-	return temp;
+    upDate temp(*this);
+    --*this;
+    return temp;
 }
 
 //Operator <
 bool upDate::operator<(upDate D) {
-	if (this->julian() < D.julian()) {
-		return true;
-	}
-	else {
-		return false;
-	}
+    if (this->julian() < D.julian()) {
+        return true;
+    }
+    else {
+        return false;
+    }
 }
 
 //Operator >
 bool upDate::operator>(upDate D) {
-	if (this->julian() > D.julian())
-		return true;
-	else
-		return false;
+    if (this->julian() > D.julian())
+        return true;
+    else
+        return false;
 }
 
 //Operator ==
 bool upDate::operator==(upDate D) {
-	if (this->julian() == D.julian())
-		return true;
-	else
-		return false;
+    if (this->julian() == D.julian())
+        return true;
+    else
+        return false;
 }
 
 int main() {
